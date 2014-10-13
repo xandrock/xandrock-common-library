@@ -282,19 +282,19 @@ CVector	Quaternion::getRotationAxis() const {
 }
 
 
-void Quaternion::ConvectEuler(CVector &angle)
+void Quaternion::ConvectEuler(CVector &euler)
 {
 	float		angle;
 	float		sr, sp, sy, cr, cp, cy;
 
 	// FIXME: rescale the inputs to 1/2 angle
-	angle = angles[2] * 0.5f;
+	angle = euler[2] * 0.5f;
 	sy = sin(angle);
 	cy = cos(angle);
-	angle = angles[1] * 0.5f;
+	angle = euler[1] * 0.5f;
 	sp = sin(angle);
 	cp = cos(angle);
-	angle = angles[0] * 0.5f;
+	angle = euler[0] * 0.5f;
 	sr = sin(angle);
 	cr = cos(angle);
 

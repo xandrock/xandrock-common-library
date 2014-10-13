@@ -8,6 +8,15 @@
 
 #include <math.h>
 #include <memory.h>
+
+
+
+#define PI		(3.14159265359l)
+#define DEG2RAD(a)	(PI/180*(a))
+#define RAD2DEG(a)	(180/PI*(a))
+#define RADIAN 57.2957795f
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Data structures and containers
 // Much thought went into how these are declared. Many libraries declare these
@@ -50,10 +59,6 @@ typedef double M3DMatrix44d[16];	// A 4 x 4 matrix, column major (doubles) - Ope
 #define M3D_INV_PI_DIV_180 (57.2957795130823229)
 
 
-
-///////////////////////////////////////////////////////////////////////////////
-//  自己从别的地方弄来的函数
-///////////////////////////////////////////////////////////////////////////////
 void m3dAngleQuaternion( const float angles[3], float quaternion[4] );
 
 void m3dQuaternionSlerp( const float p[4], float q[4], float t, float qt[4] );
