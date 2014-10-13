@@ -282,23 +282,7 @@ CVector	Quaternion::getRotationAxis() const {
 }
 
 
-//旋转一个向量
-//CVector Quaternion::RotateVector(CVector &vec)
-//{
-//	//CVector p(q.x,q.y,q.z);
-//	//CVector zd=p.CrossProduct(v)+q.w*v;
-//	//return vec + 2.0*p.CrossProduct(zd);//cross(q.xyz, cross(q.xyz ,v) + q.w*v);
-//	//vec3 qrot( vec4 q, vec3 v )
-//	//{
-//	//    return v + 2.0*cross(q.xyz, cross(q.xyz ,v) + q.w*v);
-//	//}
-//	//
-//	CVector *pV=(CVector*)this;
-//	return vec + 2.0 * pV->CrossProduct(pV->CrossProduct(vec) + vec * w);
-//}
-
-//从欧拉角转化
-void Quaternion::ConvectEuler(CVector &angles)
+void Quaternion::ConvectEuler(CVector &angle)
 {
 	float		angle;
 	float		sr, sp, sy, cr, cp, cy;
@@ -340,7 +324,8 @@ void Quaternion::ConvectEuler(CVector &angles)
 //
 // See 10.4.13
 
-Quaternion slerp(const Quaternion &q0, const Quaternion &q1, float t) {
+Quaternion slerp(const Quaternion &q0, const Quaternion &q1, float t)
+{
 
 	// Check for out-of range parameter and return edge points if so
 
