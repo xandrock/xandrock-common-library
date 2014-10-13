@@ -54,74 +54,6 @@ void m3dMatToQuat( float q[4], const float m[16])
 	}
 }
 
-void m3dAngleQuaternion( const float angles[3], float quaternion[4] )
-{
-	float		angle;
-	float		sr, sp, sy, cr, cp, cy;
-
-	// FIXME: rescale the inputs to 1/2 angle
-	angle = angles[2] * 0.5f;
-	sy = sin(angle);
-	cy = cos(angle);
-	angle = angles[1] * 0.5f;
-	sp = sin(angle);
-	cp = cos(angle);
-	angle = angles[0] * 0.5f;
-	sr = sin(angle);
-	cr = cos(angle);
-
-	quaternion[0] = sr*cp*cy-cr*sp*sy; // X
-	quaternion[1] = cr*sp*cy+sr*cp*sy; // Y
-	quaternion[2] = cr*cp*sy-sr*sp*cy; // Z
-	quaternion[3] = cr*cp*cy+sr*sp*sy; // W
-}
-void m3dQuaternionSlerp( const float p[4], float q[4], float t, float qt[4] )
-{
-	int i;
-	float omega, cosom, sinom, sclp, sclq;
-
-	// decide if one of the quaternions is backwards
-	float a = 0;
-	float b = 0;
-	for (i = 0; i < 4; i++) {
-		a += (p[i]-q[i])*(p[i]-q[i]);
-		b += (p[i]+q[i])*(p[i]+q[i]);
-	}
-	if (a > b) {
-		for (i = 0; i < 4; i++) {
-			q[i] = -q[i];
-		}
-	}
-
-	cosom = p[0]*q[0] + p[1]*q[1] + p[2]*q[2] + p[3]*q[3];
-
-	if ((1.0 + cosom) > 0.00000001) {
-		if ((1.0 - cosom) > 0.00000001) {
-			omega = acos( cosom );
-			sinom = sin( omega );
-			sclp = sin( (1.0f - t)*omega) / sinom;
-			sclq = sin( t*omega ) / sinom;
-		}
-		else {
-			sclp = 1.0f - t;
-			sclq = t;
-		}
-		for (i = 0; i < 4; i++) {
-			qt[i] = sclp * p[i] + sclq * q[i];
-		}
-	}
-	else {
-		qt[0] = -p[1];
-		qt[1] = p[0];
-		qt[2] = -p[3];
-		qt[3] = p[2];
-		sclp = (float)sin( (1.0f - t) * 0.5f * M3D_PI);
-		sclq = (float)sin( t * 0.5f * M3D_PI);
-		for (i = 0; i < 3; i++) {
-			qt[i] = sclp * p[i] + sclq * qt[i];
-		}
-	}
-}
 void m3dRotationMatrix44(M3DMatrix44f m, M3DVector3f angles)
 {
 	float		angle;
@@ -159,8 +91,45 @@ void m3dRotationMatrix44(M3DMatrix44f m, M3DVector3f angles)
 	m[15] = 1.0f;
 }
 
+void m3dRotationMatrix44(M3DMatrix44d m, M3DVector3d angles)
+{
+	float		angle;
+	float		sr, sp, sy, cr, cp, cy;
 
-void m3dQuaternionMatrix( const float quaternion[4], float matrix[16] )
+	angle = angles[2];
+	sy = sin(angle);
+	cy = cos(angle);
+	angle = angles[1];
+	sp = sin(angle);
+	cp = cos(angle);
+	angle = angles[0];
+	sr = sin(angle);
+	cr = cos(angle);
+
+	// matrix = (Z * Y) * X
+	m[0] = cp*cy;
+	m[4] = cp*sy;
+	m[8] = -sp;
+	m[12] = 0.0f;
+
+	m[1] = sr*sp*cy+cr*-sy;
+	m[5] = sr*sp*sy+cr*cy;
+	m[9] = sr*cp;
+	m[13] = 0.0f;
+
+	m[2] = (cr*sp*cy+-sr*-sy);
+	m[6] = (cr*sp*sy+-sr*cy);
+	m[10] = cr*cp;
+	m[14] = 0.0f;
+
+	m[3] = 0.0;
+	m[7] = 0.0;
+	m[11] = 0.0;
+	m[15] = 1.0f;
+}
+
+
+void m3dQuaternionMatrix( const float quaternion[4], M3DMatrix44d matrix  )
 {
 	matrix[0] = 1.0f - 2.0f * quaternion[1] * quaternion[1] - 2.0f * quaternion[2] * quaternion[2];
 	matrix[4] = 2.0f * quaternion[0] * quaternion[1] + 2.0f * quaternion[3] * quaternion[2];
