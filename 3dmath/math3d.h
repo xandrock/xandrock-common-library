@@ -59,13 +59,10 @@ typedef double M3DMatrix44d[16];	// A 4 x 4 matrix, column major (doubles) - Ope
 #define M3D_INV_PI_DIV_180 (57.2957795130823229)
 
 
-void m3dAngleQuaternion( const float angles[3], float quaternion[4] );
-
-void m3dQuaternionSlerp( const float p[4], float q[4], float t, float qt[4] );
 
 void m3dRotationMatrix44(M3DMatrix44f m, M3DVector3f angle);
 
-void m3dQuaternionMatrix( const float quaternion[4], float matrix[16] );
+void m3dQuaternionMatrix( const float quaternion[4], M3DMatrix44d matrix );
 
 void m3dMatToQuat( float q[4], const float m[16]);
 ///////////////////////////////////////////////////////////////////////////////
@@ -502,6 +499,7 @@ void m3dRotationMatrix33(M3DMatrix33d m, double angle, double x, double y, doubl
 void m3dRotationMatrix44(M3DMatrix44f m, float angle, float x, float y, float z);
 void m3dRotationMatrix44(M3DMatrix44d m, double angle, double x, double y, double z);
 void m3dRotationMatrix44(M3DMatrix44f m, M3DVector3f angle);
+void m3dRotationMatrix44(M3DMatrix44d m, M3DVector3d angle);
 
 // Create a Translation matrix. Only 4x4 matrices have translation components
 inline void m3dTranslationMatrix44(M3DMatrix44f m, float x, float y, float z)

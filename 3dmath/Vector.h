@@ -145,9 +145,9 @@ public:
 
 	// post multiply by scalar
 	inline const CVector operator*(const float &s) const
-     {
-          return CVector(x*s, y*s, z*s);
-     }
+	{
+		return CVector(x*s, y*s, z*s);
+	}
 
 	// pre multiply by scalar
 	friend inline const CVector operator*(const float &s, const CVector &vec)
