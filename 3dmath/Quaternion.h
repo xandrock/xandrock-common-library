@@ -96,14 +96,14 @@ public:
 	float	getRotationAngle() const;
 	CVector	getRotationAxis() const;
 
-	//旋转向量
+	//rotate a vector
 	inline CVector RotateVector(CVector &vec)
 	{
-		CVector *pV=(CVector*)this;
+		CVector *pV = (CVector*)this;
 		return vec + 2.0 * pV->CrossProduct(pV->CrossProduct(vec) + vec * w);
 	}
-	//根据欧拉角得到值
-	void ConvectEuler(CVector &angles);
+	//convert from a euler angle
+	void ConvectEuler(CVector &angle);
 };
 
 // A global "identity" quaternion constant

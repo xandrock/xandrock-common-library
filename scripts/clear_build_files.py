@@ -1,8 +1,8 @@
 import os
 import string
 
-prefixs=["ui_", "moc_", "qrc_"]
-suffixs=[".aps", ".opt", ".ncb", ".pch", "sbr", ".bsc", ".obj", ".suo", ".sdf", ".user", ".tlog", ".lastbuildstate", ".pdb", ".idb", ".ilk", ".log", ".ipch", ".unsuccessfulbuild"]
+prefixs=["ui_", "moc_", "qrc_", "Makefile"]
+suffixs=[".aps", ".opt", ".ncb", ".pch", "sbr", ".bsc", ".obj", ".suo", ".sdf", ".user", ".tlog", ".lastbuildstate", ".pdb", ".idb", ".ilk", ".log", ".ipch", ".unsuccessfulbuild", ".manifest.rc", ".manifest", ".manifest.res"]
 
 for path,dirs,files in os.walk(".\\"):
     for file in files:
