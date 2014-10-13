@@ -15,12 +15,6 @@
      Copyright (c) 2000 Bas Kuenen. All Rights Reserved.
      homepage: baskuenen.cfxweb.net
 */
-
-#define PI		(3.14159265359l)
-#define DEG2RAD(a)	(PI/180*(a))
-#define RAD2DEG(a)	(180/PI*(a))
-#define RADIAN 57.2957795f
-
 struct Vector4f
 {
 	float x;
@@ -157,9 +151,9 @@ public:
 
 	// pre multiply by scalar
 	friend inline const CVector operator*(const float &s, const CVector &vec)
-     {
-          return vec*s;
-     }
+	{
+		return vec*s;
+	}
 
 	inline const CVector operator*(const CVector& vec) const
 	{
@@ -182,27 +176,27 @@ public:
 
 	// cross product
 	inline const CVector CrossProduct(const CVector &vec) const
-     {
-          return CVector(y*vec.z - z*vec.y, z*vec.x - x*vec.z, x*vec.y - y*vec.x);
-     }
+	{
+		return *this ^ vec;
+	}
 
 	// cross product
 	inline const CVector operator^(const CVector &vec) const
-     {
-          return CVector(y*vec.z - z*vec.y, z*vec.x - x*vec.z, x*vec.y - y*vec.x);
-     }
+	{
+		return CVector(y*vec.z - z*vec.y, z*vec.x - x*vec.z, x*vec.y - y*vec.x);
+	}
 
 	// dot product
 	inline const float DotProduct(const CVector &vec) const
-     {
-          return x*vec.x + y*vec.x + z*vec.z;
-     }
+	{
+		return *this % vec;
+	}
 
 	// dot product
 	const float operator%(const CVector &vec) const
-     {
-          return x*vec.x + y*vec.x + z*vec.z;
-     }
+	{
+		return x*vec.x + y*vec.x + z*vec.z;
+	}
 
 	// length of vector
 	inline const float Length() const
@@ -252,7 +246,7 @@ public:
           return (vec - normal * 2.0 * (vec % normal)) * !*this;
      }
 
-	// rotate angle degrees about a normal
+	// rotate angle degrees around a normal
 	const CVector inline Rotate(const float angle, const CVector& normal) const
 	{	
 		const float cosine = cos(angle);
