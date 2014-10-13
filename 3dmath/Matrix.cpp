@@ -34,6 +34,11 @@ void Matrix::Rotate(const Quaternion &rot)
 	*this *= RotationMatrix(rot);
 }
 
+void Matrix::Rotate(const double degree, const CVector &axis)
+{
+	*this *= RotationMatrix(degree, axis);
+}
+
 void Matrix::Rotate(const CVector &eula)
 {
 	*this *= RotationMatrix(eula);
