@@ -39,7 +39,7 @@
 // Setup the quaternion to rotate about the specified axis
 
 #include "Quaternion.h"
-void	Quaternion::setToRotateAboutX(float theta) {
+void	Quaternion::SetToRotateAboutX(float theta) {
 
 	// Compute the half angle
 
@@ -53,7 +53,7 @@ void	Quaternion::setToRotateAboutX(float theta) {
 	z = 0.0f;
 }
 
-void	Quaternion::setToRotateAboutY(float theta) {
+void	Quaternion::SetToRotateAboutY(float theta) {
 
 	// Compute the half angle
 
@@ -67,7 +67,7 @@ void	Quaternion::setToRotateAboutY(float theta) {
 	z = 0.0f;
 }
 
-void	Quaternion::setToRotateAboutZ(float theta) {
+void	Quaternion::SetToRotateAboutZ(float theta) {
 
 	// Compute the half angle
 
@@ -81,7 +81,7 @@ void	Quaternion::setToRotateAboutZ(float theta) {
 	z = sin(thetaOver2);
 }
 
-void	Quaternion::setToRotateAboutAxis(const CVector &axis, float theta) {
+void	Quaternion::SetToRotateAboutAxis(const CVector &axis, float theta) {
 
 	// The axis of rotation must be normalized
 
@@ -108,7 +108,7 @@ void	Quaternion::setToRotateAboutAxis(const CVector &axis, float theta) {
 //
 // See 10.6.5 for more information.
 
-void	Quaternion::setToRotateObjectToInertial(const CVector &orientation) {
+void	Quaternion::SetToRotateObjectToInertial(const CVector &orientation) {
 
 	// Compute sine and cosine of the half angles
 
@@ -134,7 +134,7 @@ void	Quaternion::setToRotateObjectToInertial(const CVector &orientation) {
 //
 // See 10.6.5 for more information.
 
-void	Quaternion::setToRotateInertialToObject(const CVector &orientation) {
+void	Quaternion::SetToRotateInertialToObject(const CVector &orientation) {
 
 	// Compute sine and cosine of the half angles
 
@@ -200,7 +200,7 @@ Quaternion &Quaternion::operator *=(const Quaternion &a) {
 // creep," which can occur when many successive quaternion operations
 // are applied.
 
-void	Quaternion::normalize() {
+void	Quaternion::Normalize() {
 
 	// Compute magnitude of the quaternion
 
@@ -226,7 +226,7 @@ void	Quaternion::normalize() {
 
 		// In a release build, just slam it to something
 
-		identity();
+		Identity();
 	}
 }
 
@@ -235,7 +235,7 @@ void	Quaternion::normalize() {
 //
 // Return the rotation angle theta
 
-float	Quaternion::getRotationAngle() const {
+float	Quaternion::GetRotationAngle() const {
 
 	// Compute the half angle.  Remember that w = cos(theta / 2)
 
@@ -251,7 +251,7 @@ float	Quaternion::getRotationAngle() const {
 //
 // Return the rotation axis
 
-CVector	Quaternion::getRotationAxis() const {
+CVector	Quaternion::GetRotationAxis() const {
 
 	// Compute sin^2(theta/2).  Remember that w = cos(theta/2),
 	// and sin^2(x) + cos^2(x) = 1
@@ -282,19 +282,19 @@ CVector	Quaternion::getRotationAxis() const {
 }
 
 
-void Quaternion::ConvectEuler(CVector &euler)
+void Quaternion::FromEuler(const CVector &euler)
 {
 	float		angle;
 	float		sr, sp, sy, cr, cp, cy;
 
 	// FIXME: rescale the inputs to 1/2 angle
-	angle = euler[2] * 0.5f;
+	angle = euler.z * 0.5f;
 	sy = sin(angle);
 	cy = cos(angle);
-	angle = euler[1] * 0.5f;
+	angle = euler.y * 0.5f;
 	sp = sin(angle);
 	cp = cos(angle);
-	angle = euler[0] * 0.5f;
+	angle = euler.x * 0.5f;
 	sr = sin(angle);
 	cr = cos(angle);
 
@@ -324,7 +324,7 @@ void Quaternion::ConvectEuler(CVector &euler)
 //
 // See 10.4.13
 
-Quaternion slerp(const Quaternion &q0, const Quaternion &q1, float t)
+Quaternion Quaternion::Slerp(const Quaternion &q0, const Quaternion &q1, float t)
 {
 
 	// Check for out-of range parameter and return edge points if so
@@ -334,7 +334,7 @@ Quaternion slerp(const Quaternion &q0, const Quaternion &q1, float t)
 
 	// Compute "cosine of angle between quaternions" using dot product
 
-	float cosOmega = dotProduct(q0, q1);
+	float cosOmega = q0.DotProduct(q1);
 
 	// If negative dot, use -q1.  Two quaternions q and -q
 	// represent the same rotation, but may produce
@@ -404,7 +404,7 @@ Quaternion slerp(const Quaternion &q0, const Quaternion &q1, float t)
 	return result;
 }
 
-void QuatSlerp(Quaternion &qOut, const Quaternion &q0, const Quaternion &q1, float t)
+void Quaternion::Slerp(Quaternion &qOut, const Quaternion &q0, const Quaternion &q1, float t)
 {
 
 	// Check for out-of range parameter and return edge points if so
@@ -422,7 +422,7 @@ void QuatSlerp(Quaternion &qOut, const Quaternion &q0, const Quaternion &q1, flo
 
 	// Compute "cosine of angle between quaternions" using dot product
 
-	float cosOmega = dotProduct(q0, q1);
+	float cosOmega = q0.DotProduct(q1);
 
 	// If negative dot, use -q1.  Two quaternions q and -q
 	// represent the same rotation, but may produce
@@ -502,18 +502,19 @@ void QuatSlerp(Quaternion &qOut, const Quaternion &q0, const Quaternion &q1, flo
 //
 // See 10.4.12
 
-Quaternion pow(const Quaternion &q, float exponent) {
+void Quaternion::Pow(float exponent)
+{
 
 	// Check for the case of an identity quaternion.
 	// This will protect against divide by zero
 
-	if (fabs(q.w) > .9999f) {
-		return q;
+	if (fabs(w) > .9999f) {
+		return;
 	}
 
 	// Extract the half angle alpha (alpha = theta/2)
 
-	float	alpha = acos(q.w);
+	float	alpha = acos(w);
 
 	// Compute new alpha value
 
@@ -521,17 +522,22 @@ Quaternion pow(const Quaternion &q, float exponent) {
 
 	// Compute new w value
 
-	Quaternion result;
-	result.w = cos(newAlpha);
+	w = cos(newAlpha);
 
 	// Compute new xyz values
 
 	float	mult = sin(newAlpha) / sin(alpha);
-	result.x = q.x * mult;
-	result.y = q.y * mult;
-	result.z = q.z * mult;
+	x *= mult;
+	y *= mult;
+	z *= mult;
+}
 
-	// Return it
-
-	return result;
+void Quaternion::FromMatrix( const Matrix &mat )
+{
+	float quat[4];
+	m3dMatToQuat(quat, mat.m_data);
+	x = quat[0];
+	y = quat[1];
+	z = quat[2];
+	w = quat[3];
 }

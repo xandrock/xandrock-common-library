@@ -17,7 +17,7 @@ float ReciprocalSqrt( float x )
 	r = r * ( 1.5f - r * r * y );
 	return r;
 }
-void m3dMatToQuat( float q[4], const float m[16])
+void m3dMatToQuat( float q[4], const M3DMatrix44f m)
 {
 	if ( m[0] + m[1*4+1] + m[2*4+2] > 0.0f )
 	{
@@ -129,7 +129,7 @@ void m3dRotationMatrix44(M3DMatrix44d m, M3DVector3d angles)
 }
 
 
-void m3dQuaternionMatrix( const float quaternion[4], M3DMatrix44d matrix  )
+void m3dQuaternionMatrix( const float quaternion[4], M3DMatrix44f matrix  )
 {
 	matrix[0] = 1.0f - 2.0f * quaternion[1] * quaternion[1] - 2.0f * quaternion[2] * quaternion[2];
 	matrix[4] = 2.0f * quaternion[0] * quaternion[1] + 2.0f * quaternion[3] * quaternion[2];
@@ -242,7 +242,7 @@ void m3dMatrixMultiply44(M3DMatrix44f product, const M3DMatrix44f a, const M3DMa
 }
 
 // Ditto above, but for doubles
-void m3dMatrixMultiply(M3DMatrix44d product, const M3DMatrix44d a, const M3DMatrix44d b )
+void m3dMatrixMultiply44(M3DMatrix44d product, const M3DMatrix44d a, const M3DMatrix44d b )
 {
 	for (int i = 0; i < 4; i++) {
 		double ai0=A(i,0),  ai1=A(i,1),  ai2=A(i,2),  ai3=A(i,3);
@@ -274,7 +274,7 @@ void m3dMatrixMultiply33(M3DMatrix33f product, const M3DMatrix33f a, const M3DMa
 }
 
 // Ditto above, but for doubles
-void m3dMatrixMultiply44(M3DMatrix33d product, const M3DMatrix33d a, const M3DMatrix33d b )
+void m3dMatrixMultiply33(M3DMatrix33d product, const M3DMatrix33d a, const M3DMatrix33d b )
 {
 	for (int i = 0; i < 3; i++) {
 		double ai0=A33(i,0),  ai1=A33(i,1),  ai2=A33(i,2);
@@ -782,8 +782,8 @@ void m3dProjectXY(const M3DMatrix44f mModelView, const M3DMatrix44f mProjection,
     
 ///////////////////////////////////////////////////////////////////////////////////////
 // Get window coordinates, we also want Z....
-void m3dProjectXYZ(const M3DMatrix44f mModelView, const M3DMatrix44f mProjection, const int iViewPort[4], const M3DVector3f vPointIn, M3DVector3f vPointOut)
-	{
+void m3dProjectXYZ(M3DVector3f vPointOut, const M3DMatrix44f mModelView, const M3DMatrix44f mProjection, const int iViewPort[4], const M3DVector3f vPointIn)
+{
     M3DVector4f vBack, vForth;
 
 	memcpy(vBack, vPointIn, sizeof(float)*3);
@@ -806,7 +806,7 @@ void m3dProjectXYZ(const M3DMatrix44f mModelView, const M3DMatrix44f mProjection
     /* Map x,y to viewport */
     vPointOut[0] = (vPointOut[0] * iViewPort[2]) + iViewPort[0];
     vPointOut[1] = (vPointOut[1] * iViewPort[3]) + iViewPort[1];
-	}
+}
 
 
 

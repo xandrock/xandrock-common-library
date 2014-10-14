@@ -59,13 +59,13 @@ public:
 
 	// vector assignment
 	inline const CVector &operator=(const CVector &vec)
-     {
-          x = vec.x;
-          y = vec.y;
-          z = vec.z;
+	{
+		x = vec.x;
+		y = vec.y;
+		z = vec.z;
 
-          return *this;
-     }
+		return *this;
+	}
 
 	// vecector equality
 	inline const bool operator==(const CVector &vec) const
@@ -195,7 +195,7 @@ public:
 	// dot product
 	const float operator%(const CVector &vec) const
 	{
-		return x*vec.x + y*vec.x + z*vec.z;
+		return x*vec.x + y*vec.y + z*vec.z;
 	}
 
 	// length of vector
@@ -254,6 +254,40 @@ public:
 
 		return CVector(*this * cosine + ((normal * *this) * (1.0f - cosine)) *
 			          normal + (*this ^ normal) * sine);
+	}
+
+	static CVector GetLinePosInPlane(const CVector &planePoint, const CVector &planeNormal, const CVector &linePoint, const CVector &lineDir)
+	{
+		CVector result(0.0, 0.0, 0.0);
+		float vpt = planeNormal.DotProduct(lineDir);
+		if (vpt != 0.0f)
+		{
+			float t = ((planePoint.x - linePoint.x) * planeNormal.x + (planePoint.y - linePoint.y) * planeNormal.y + (planePoint.z - linePoint.z) * planeNormal.z) / vpt;
+			result = linePoint + lineDir * t;
+		}
+		return result;
+	}
+
+	static bool GetShortestBridge(const CVector &lineAPoint1, const CVector &lineAPoint2, const CVector &lineBPoint1, const CVector &lineBPoint2, CVector &bridgePointA, CVector &bridgePointB)
+	{
+		CVector lineADir = lineAPoint2 - lineAPoint1;
+		CVector lineBDir = lineBPoint2 - lineBPoint1;
+		lineADir.Normalize();
+		lineBDir.Normalize();
+		double dotResult = lineADir.DotProduct(lineBDir);
+
+		if(dotResult == 0.0)
+		{
+			return false;
+		}
+		CVector abNormal = lineADir.CrossProduct(lineBDir);
+		abNormal.Normalize();
+		CVector aPlaneNormal = abNormal.CrossProduct(lineADir);
+		bridgePointB =  GetLinePosInPlane(lineAPoint1, aPlaneNormal, lineBPoint1, lineBDir);
+		CVector bPlaneNormal = abNormal.CrossProduct(lineBDir);
+		bridgePointA =  GetLinePosInPlane(lineBPoint1, bPlaneNormal, lineAPoint1, lineADir);
+		return true;
+
 	}
 };
 

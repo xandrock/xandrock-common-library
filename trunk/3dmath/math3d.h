@@ -62,9 +62,9 @@ typedef double M3DMatrix44d[16];	// A 4 x 4 matrix, column major (doubles) - Ope
 
 void m3dRotationMatrix44(M3DMatrix44f m, M3DVector3f angle);
 
-void m3dQuaternionMatrix( const float quaternion[4], M3DMatrix44d matrix );
+void m3dQuaternionMatrix( const float quaternion[4], M3DMatrix44f matrix );
 
-void m3dMatToQuat( float q[4], const float m[16]);
+void m3dMatToQuat( float q[4], const M3DMatrix44f m);
 ///////////////////////////////////////////////////////////////////////////////
 // Useful shortcuts and macros
 // Radians are king... but we need a way to swap back and forth
