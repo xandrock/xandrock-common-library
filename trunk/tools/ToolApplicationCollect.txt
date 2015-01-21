@@ -1,0 +1,6 @@
+notepad++: text edit
+BeyondCompare: code compare tool(Shared)
+TeamViewer: remote desktop control
+ComAssistant: RS232/485 serial port monitor
+NetAssist: TCP/UDP monitor
+AllwaySync: File System Sync tool
